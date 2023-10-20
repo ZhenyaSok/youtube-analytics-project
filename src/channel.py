@@ -1,5 +1,7 @@
 import json
 import os
+
+
 from googleapiclient.discovery import build
 
 
@@ -47,3 +49,25 @@ class Channel:
         }
         with open(file_json, 'w', encoding="utf-8") as f:
             f.write(json.dumps(json_data, ensure_ascii=False, indent=4))
+
+
+    def __add__(self, other: "Channel"):
+        return self.subscriber_count + other.subscriber_count
+
+    def __sub__(self, other):
+        return self.subscriber_count - other.subscriber_count
+
+    def __gt__(self, other):
+        return self.subscriber_count > other.subscriber_count
+
+    def __ge__(self, other):
+        return self.subscriber_count >= other.subscriber_count
+
+    def __lt__(self, other):
+        return self.subscriber_count < other.subscriber_count
+
+    def __le__(self, other):
+        return self.subscriber_count <= other.subscriber_count
+
+    def __str__(self):
+        return f"{self.title}, {self.url}"
