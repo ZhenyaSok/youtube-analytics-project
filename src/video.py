@@ -8,14 +8,15 @@ class Video:
 
     def __init__(self,id_video):
         try:
-            self.__id_video = id_video
+            self._id_video = id_video
             self.title = self.video_response()['items'][0]['snippet']['title']
             self.view_count = self.video_response()['items'][0]['statistics']['viewCount']
             self.like_count = self.video_response()['items'][0]['statistics']['likeCount']
-            self.url = Video.url_str + self.__id_video
+            self.url = Video.url_str + self._id_video
 
         except IndexError:
-            self.__id_video = id_video
+            print(f'Такого id {self.id_video}, не найдено ')
+            self._id_video = id_video
             self.title = None
             self.view_count = None
             self.like_count = None
@@ -29,13 +30,13 @@ class Video:
 
     @property
     def id_video(self):
-        return self.__id_video
+        return self._id_video
 
 
     def video_response(self):
         """Метод для получения информации о видео"""
         video = Video.get_service().videos().list(part='snippet,statistics,contentDetails,topicDetails',
-                                                  id=self.__id_video
+                                                  id=self._id_video
                                                   ).execute()
         return video
 
