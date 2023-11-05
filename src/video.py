@@ -2,18 +2,25 @@ import  os
 from googleapiclient.discovery import build
 
 
-
-
 class Video:
     api_key: str = os.getenv('YOUTUBE_KEY')
     url_str = 'https://youtu.be/'
 
     def __init__(self,id_video):
-        self.__id_video = id_video
-        self.title = self.video_response()['items'][0]['snippet']['title']
-        self.view_count = self.video_response()['items'][0]['statistics']['viewCount']
-        self.like_count = self.video_response()['items'][0]['statistics']['likeCount']
-        self.url = Video.url_str + self.__id_video
+        try:
+            self.__id_video = id_video
+            self.title = self.video_response()['items'][0]['snippet']['title']
+            self.view_count = self.video_response()['items'][0]['statistics']['viewCount']
+            self.like_count = self.video_response()['items'][0]['statistics']['likeCount']
+            self.url = Video.url_str + self.__id_video
+
+        except IndexError:
+            self.__id_video = id_video
+            self.title = None
+            self.view_count = None
+            self.like_count = None
+            self.url = None
+
 
     @classmethod
     def get_service(cls):
@@ -46,4 +53,3 @@ class PLVideo(Video):
     @property
     def pl_id(self):
         return self.__pl_id
-
